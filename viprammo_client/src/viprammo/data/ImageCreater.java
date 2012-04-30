@@ -1,30 +1,28 @@
 package viprammo.data;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+
+import viparammo.log.MyHandler;
 
 public class ImageCreater {
 
-	private static ImageCreater instance = new ImageCreater();
+	private Logger logger = Logger.getLogger(ImageCreater.class.getName());
 	
-	Image i_w1;
-	Image i_a1;
-	Image i_a2;
-	Image i_s1;
-	Image i_s2;
-	Image i_d1;
-	Image i_d2;
+	private static ImageCreater instance = new ImageCreater();
+
+	private Map<String, Image> img_map = new HashMap<String, Image>();
+
 	
 	private ImageCreater() {
+		logger.addHandler(new MyHandler());
 		this.read();
 	}
 	
@@ -34,39 +32,30 @@ public class ImageCreater {
 	
 	private void read() {
 		
-		try {
-			this.i_w1 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/w1.png"));
-			this.i_a1 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/a1.png"));
-			this.i_a2 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/a2.png"));
-			this.i_s1 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/s1.png"));
-			this.i_s2 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/s2.png"));
-			this.i_d1 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/d1.png"));
-			this.i_d2 = ImageIO.read(new URL("http://118.243.3.245/vipra/pic/d2.png"));
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		String[] files = {"w1", "a1", "a2", "s1", "s2", "d1", "d2"};
+		String base_url = "http://118.243.3.245/vipra/pic/";
+		String url = null;
+		
+		for (String s : files) {
+			url = base_url + s;
+			try {
+				this.img_map.put(s, ImageIO.read(new URL(url)));
+				logger.info(url);
+			} catch (MalformedURLException e) {
+				logger.severe(e.getMessage());
+			} catch (IOException e) {
+				logger.severe(e.getMessage());
+			}
 		}
 
+		logger.info("âÊëúì«Ç›çûÇ›äÆóπ");
+		
 	}
 
 	public Image getImg(String prefix) {
-		if (prefix.equals("w1")) {
-			return this.i_w1;
-		} else if (prefix.equals("a1")) {
-			return this.i_a1;
-		} else if (prefix.equals("a2")) {
-			return this.i_a2;
-		} else if (prefix.equals("s1")) {
-			return this.i_s1;
-		} else if (prefix.equals("s2")) {
-			return this.i_s2;
-		} else if (prefix.equals("d1")) {
-			return this.i_d1;
-		} else if (prefix.equals("d2")) {
-			return this.i_d2;
-		} else {
-			return null;
-		}
+		
+		logger.info("ì«Ç›çûÇ›âÊëú=" + prefix);
+		return this.img_map.get(prefix);
+	
 	}
 }

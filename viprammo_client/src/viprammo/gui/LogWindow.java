@@ -94,6 +94,7 @@ public class LogWindow implements ActionListener, WindowListener {
 	public void hide() {
 		MainWindow.getInstance().menubar.getMenu(1).getItem(0).setEnabled(true);
 		this.frame.setVisible(false);
+		MainWindow.getInstance().panel.setFocusable(true);
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -114,9 +115,7 @@ public class LogWindow implements ActionListener, WindowListener {
 	}
 
 	public void windowClosing(WindowEvent arg0) {
-		this.frame.setVisible(false);
-		//このウィンドウが消えたらメニューのログを有効に
-		MainWindow.getInstance().menubar.getMenu(1).getItem(0).setEnabled(true);
+		this.hide();
 	}
 
 	public void windowDeactivated(WindowEvent arg0) {

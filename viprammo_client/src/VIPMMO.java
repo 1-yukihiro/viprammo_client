@@ -17,7 +17,6 @@ public class VIPMMO {
 		logger.addHandler(new MyHandler());
 		
 		logger.info("起動しました");
-		logger.info("画像の読み込み開始");
 			
 		//名前入力画面（ログイン画面）表示
 		logger.info("ログイン画面表示");

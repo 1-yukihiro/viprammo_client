@@ -26,6 +26,7 @@ public class TCPSocketReceiver extends Thread {
 		ArrayList<Byte> al = new ArrayList<Byte>();
 		
 		int rnum = 0;
+		byte mae = 0;
 		try {
 			while (true) {
 				
@@ -37,11 +38,21 @@ public class TCPSocketReceiver extends Thread {
 				System.out.println(buff[0]);
 				
 				if (buff[0] == 10) {
+					if (mae == 13) {
+						al.add(buff[0]);
+						//改行受信でコマンドデリミター 
+						CharacterDrawer.getInstance().draw(new String(VipraUtil.CollectionsByteToPbyte(al), "UTF-8"));
+						al.clear();
+						mae = 0;
+					} else {
+						al.add(buff[0]);
+						mae = 0;
+					}
+				} else if (buff[0] == 13) {
+					mae = 13;
 					al.add(buff[0]);
-					//改行受信でコマンドデリミター 
-					CharacterDrawer.getInstance().draw(new String(VipraUtil.CollectionsByteToPbyte(al)));
-					al.clear();
 				} else {
+					mae = 0;
 					al.add(buff[0]);
 				}
 

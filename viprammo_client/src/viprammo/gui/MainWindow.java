@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
@@ -20,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import org.omg.IOP.Encoding;
 
 import viprammo.bgwork.TCPSocketReceiver;
 import viprammo.bgwork.UDPDataSocketSend;
@@ -175,8 +178,11 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 			//エンター受信で書き込み内容を送信
 			if (key_char == '\n') {
 				
+				System.out.println(System.getProperty("file.encoding"));
 				String message = chat_textfield.getText();
+				
 				message = message.replaceAll(",", "*kinshi*").replaceAll("-", "*kinshi*");
+				System.out.println("message="+ message);
 				
 				//GUI描画に関わる処理
 				SwingUtilities.invokeLater(new Runnable() {
@@ -191,7 +197,11 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 				sb.append(",C,");
 				sb.append(message);
 				sb.append("\r\n");
-				UDPDataSocketSend.send(sb.toString().getBytes());
+				try {
+					UDPDataSocketSend.send(sb.toString().getBytes("UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 				
 			}
 			

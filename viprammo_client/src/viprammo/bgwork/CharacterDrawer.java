@@ -3,6 +3,7 @@
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -44,7 +45,6 @@ public class CharacterDrawer {
 	 */
 	public void draw(String val) {
 
-		
 		String[] valsp1 = val.replaceAll("\r\n", "").split("-");
 
 		String[] valsplit = valsp1[1].split(",");

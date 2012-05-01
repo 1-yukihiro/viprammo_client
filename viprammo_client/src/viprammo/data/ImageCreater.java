@@ -34,7 +34,7 @@ public class ImageCreater {
 	
 	private void read() {
 		
-		String[] files = {"w1", "a1", "a2", "s1", "s2", "d1", "d2"};
+		String[] files = {"w1", "w2", "a1", "a2", "s1", "s2", "d1", "d2"};
 		String base_url = "http://118.243.3.245/vipra/pic/";
 		String url = null;
 		

@@ -1,4 +1,4 @@
-package viprammo.bgwork;
+ï»¿package viprammo.bgwork;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +38,7 @@ public class TCPSocketReceiver extends Thread {
 				
 				if (buff[0] == 10) {
 					al.add(buff[0]);
-					//‰üsóM‚ÅƒRƒ}ƒ“ƒhƒfƒŠƒ~ƒ^[ 
+					//æ”¹è¡Œå—ä¿¡ã§ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒªãƒŸã‚¿ãƒ¼ 
 					CharacterDrawer.getInstance().draw(new String(VipraUtil.CollectionsByteToPbyte(al)));
 					al.clear();
 				} else {

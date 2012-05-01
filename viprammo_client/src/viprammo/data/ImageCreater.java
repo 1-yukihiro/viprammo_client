@@ -1,4 +1,4 @@
-package viprammo.data;
+ï»¿package viprammo.data;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -10,7 +10,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import viparammo.log.MyHandler;
+import viprammo.log.MyHandler;
+import viprammo.util.GLOBAL_CONFIG;
 
 public class ImageCreater {
 
@@ -23,6 +24,7 @@ public class ImageCreater {
 	
 	private ImageCreater() {
 		logger.addHandler(new MyHandler());
+		logger.setLevel(GLOBAL_CONFIG.LOG_LEVEL);
 		this.read();
 	}
 	
@@ -48,13 +50,13 @@ public class ImageCreater {
 			}
 		}
 
-		logger.info("‰æ‘œ“Ç‚İ‚İŠ®—¹");
+		logger.info("ç”»åƒèª­ã¿è¾¼ã¿å®Œäº†");
 		
 	}
 
 	public Image getImg(String prefix) {
 		
-		logger.info("“Ç‚İ‚İ‰æ‘œ=" + prefix);
+		logger.finest("ç”»åƒ=" + prefix);
 		return this.img_map.get(prefix);
 	
 	}

@@ -1,4 +1,4 @@
-package viprammo.gui;
+ï»¿package viprammo.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -16,11 +16,11 @@ import javax.swing.SwingUtilities;
 public class LogWindow implements ActionListener, WindowListener {
 
 	public JFrame frame;
-	public JList<String> list;
-	public DefaultListModel<String> listmodel;
+	public JList list;
+	public DefaultListModel listmodel;
 	public JButton button;
 	
-	//‚Ü‚½‚à‚âƒVƒ“ƒOƒ‹ƒgƒ“iGUI‚Ínew‚³‚ê‚é‚Æ–ï‰îB‚Æ‚­‚É‚±‚¢‚Â‚ÍƒƒOwindow‚È‚ñ‚Åj
+	//ã¾ãŸã‚‚ã‚„ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ï¼ˆGUIã¯newã•ã‚Œã‚‹ã¨å„ä»‹ã€‚ã¨ãã«ã“ã„ã¤ã¯ãƒ­ã‚°windowãªã‚“ã§ï¼‰
 	public static LogWindow instance = new LogWindow();
 	
 	private LogWindow() {
@@ -31,14 +31,14 @@ public class LogWindow implements ActionListener, WindowListener {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		
-		list = new JList<String>();
-		listmodel = new DefaultListModel<String>();
+		list = new JList();
+		listmodel = new DefaultListModel();
 		list.setModel(listmodel);
 		
 		JScrollPane scroll_pane = new JScrollPane();
 		scroll_pane.getViewport().setView(list);
 		
-		button = new JButton("ƒEƒBƒ“ƒhƒEÁ‚·");
+		button = new JButton("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¶ˆã™");
 		button.addActionListener(this);
 		
 		frame.add(scroll_pane, BorderLayout.CENTER);
@@ -47,7 +47,7 @@ public class LogWindow implements ActionListener, WindowListener {
 	}
 
 	/**
-	 * ƒCƒ“ƒXƒ^ƒ“ƒXƒQƒbƒ^[
+	 * ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚²ãƒƒã‚¿ãƒ¼
 	 * @return
 	 */
 	public static LogWindow getInstance() {
@@ -55,25 +55,26 @@ public class LogWindow implements ActionListener, WindowListener {
 	}
 	
 	/**
-	 * ƒƒOƒEƒBƒ“ƒhƒE‚ÉƒƒOo—Í‚·‚é
-	 * @param logstr ƒƒO•¶š—ñ
+	 * ãƒ­ã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ­ã‚°å‡ºåŠ›ã™ã‚‹
+	 * @param logstr ãƒ­ã‚°æ–‡å­—åˆ—
 	 */
 	public void writeLog(String logstr) {
 	
-		//‚Å‚©‚·‚¬‚é‚Ægui‚Á”ò‚Ô‚©‚à‚µ‚ê‚ñ‚Ì‚Å500s’ö“x‚Éû‚ß‚é
+		//ã§ã‹ã™ãã‚‹ã¨guiå¹ã£é£›ã¶ã‹ã‚‚ã—ã‚Œã‚“ã®ã§500è¡Œç¨‹åº¦ã«åã‚ã‚‹
 		if (this.listmodel.size() >= 100) {
 			this.listmodel.clear();
 		}
 
-		//‚±‚±‚©‚ç‰º‚ÍGUI‚É•ÏX‚ğ‰Á‚¦‚éˆ—
+		//ã“ã“ã‹ã‚‰ä¸‹ã¯GUIã«å¤‰æ›´ã‚’åŠ ãˆã‚‹å‡¦ç†
 		final String logstr_f = logstr;
-		final DefaultListModel<String> dlm = this.listmodel;
+		final DefaultListModel dlm = this.listmodel;
 		
+		//ãƒ­ã‚°ã®æœ€æ–°è¡ŒãŒå¸¸ã«è¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ã™ã‚‹
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				dlm.add(dlm.getSize(), logstr_f);
-				list.setSelectedIndex(dlm.getSize());
-				list.ensureIndexIsVisible(dlm.getSize());
+				list.setSelectedIndex(dlm.getSize()-1);
+				list.ensureIndexIsVisible(dlm.getSize()-1);
 			}
 		});
 		
@@ -81,14 +82,14 @@ public class LogWindow implements ActionListener, WindowListener {
 	}
 
 	/**
-	 * ƒƒOƒEƒBƒ“ƒhƒE‚ğ•\¦‚·‚é
+	 * ãƒ­ã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤ºã™ã‚‹
 	 */
 	public void show() {
 		this.frame.setVisible(true);
 	}
 	
 	/**
-	 * ƒƒOƒEƒBƒ“ƒhƒE‚ğ‰B‚·
+	 * ãƒ­ã‚°ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’éš ã™
 	 */
 	public void hide() {
 		MainWindow.getInstance().menubar.getMenu(1).getItem(0).setEnabled(true);
@@ -97,7 +98,7 @@ public class LogWindow implements ActionListener, WindowListener {
 
 	public void actionPerformed(ActionEvent arg0) {
 		
-		if (arg0.getActionCommand().equals("Á‚·")) {
+		if (arg0.getActionCommand().equals("ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¶ˆã™")) {
 			this.hide();
 		}
 		
@@ -114,7 +115,7 @@ public class LogWindow implements ActionListener, WindowListener {
 
 	public void windowClosing(WindowEvent arg0) {
 		this.frame.setVisible(false);
-		//‚±‚ÌƒEƒBƒ“ƒhƒE‚ªÁ‚¦‚½‚çƒƒjƒ…[‚ÌƒƒO‚ğ—LŒø‚É
+		//ã“ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒæ¶ˆãˆãŸã‚‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒ­ã‚°ã‚’æœ‰åŠ¹ã«
 		MainWindow.getInstance().menubar.getMenu(1).getItem(0).setEnabled(true);
 	}
 

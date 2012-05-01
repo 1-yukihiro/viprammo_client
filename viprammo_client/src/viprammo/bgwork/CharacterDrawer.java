@@ -1,4 +1,4 @@
-package viprammo.bgwork;
+ï»¿package viprammo.bgwork;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -14,33 +14,33 @@ import viprammo.data.ImageCreater;
 import viprammo.gui.MainWindow;
 
 /**
- * ƒLƒƒƒ‰ƒNƒ^[‚Ì•`‰æ‚ğs‚¤ƒNƒ‰ƒXiCharanterDrawer.getInstance().draw()j‚³‚ê‚é‚Æ•`‰æ
- * «—ˆ“I‚É‚Í‘S‚Ä‚Ì•`‰æŒnˆ—iƒ`ƒƒƒbƒg‚àŠÜ‚ßj‚ğ‚±‚¢‚Â‚Ås‚¤—\’è
- * ŠeŠ‚Ånew‚³‚ê‚½‚ç¢‚é‚ñ‚ÅƒVƒ“ƒOƒ‹ƒgƒ“
+ * ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æç”»ã‚’è¡Œã†ã‚¯ãƒ©ã‚¹ï¼ˆCharanterDrawer.getInstance().draw()ï¼‰ã•ã‚Œã‚‹ã¨æç”»
+ * å°†æ¥çš„ã«ã¯å…¨ã¦ã®æç”»ç³»å‡¦ç†ï¼ˆãƒãƒ£ãƒƒãƒˆã‚‚å«ã‚ï¼‰ã‚’ã“ã„ã¤ã§è¡Œã†äºˆå®š
+ * å„æ‰€ã§newã•ã‚ŒãŸã‚‰å›°ã‚‹ã‚“ã§ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³
  * @author Yukihiro
  *
  */
 public class CharacterDrawer {
 
-	//ƒCƒ“ƒXƒ^ƒ“ƒX
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	private static CharacterDrawer instance = new CharacterDrawer();
 
-	//g‚í‚ê‚é‚±‚Æ‚È‚¢‚æ‚¤private‚Éi³Šm‚É‚ÍgetInstance‚ğÅ‰‚És‚Á‚½‚Æ‚«Às‚³‚ê‚é‚¯‚Çj
+	//ä½¿ã‚ã‚Œã‚‹ã“ã¨ãªã„ã‚ˆã†privateã«ï¼ˆæ­£ç¢ºã«ã¯getInstanceã‚’æœ€åˆã«è¡Œã£ãŸã¨ãå®Ÿè¡Œã•ã‚Œã‚‹ã‘ã©ï¼‰
 	private CharacterDrawer() {
 	}
 
 	/**
-	 * ƒCƒ“ƒXƒ^ƒ“ƒXƒQƒbƒ^[
-	 * @return —Bˆê‚Ì‚±‚¢‚Â‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‚·i‚Â‚Ü‚è‚Ç‚±‚ÅŒÄ‚Î‚ê‚Ä‚à“¯‚¶‚±‚¢‚Â‚ÉƒAƒNƒZƒXj
+	 * ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚²ãƒƒã‚¿ãƒ¼
+	 * @return å”¯ä¸€ã®ã“ã„ã¤ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™ï¼ˆã¤ã¾ã‚Šã©ã“ã§å‘¼ã°ã‚Œã¦ã‚‚åŒã˜ã“ã„ã¤ã«ã‚¢ã‚¯ã‚»ã‚¹ï¼‰
 	 */
 	public static CharacterDrawer getInstance() {
 		return instance;
 	}
 
 	/**
-	 * ‚±‚ÌƒNƒ‰ƒX‚Ì–{‘Ìˆ—
-	 * ƒT[ƒo‚©‚ç—ˆ‚½w—ß‚ğÀs‚·‚é
-	 * @param val ‚±‚±‚É‚Í¡‚Ì‚Æ‚±‚ëƒT[ƒo‚©‚ç—ˆ‚½ƒRƒ}ƒ“ƒh•¶š—ñ‚ğ—^‚¦‚éj
+	 * ã“ã®ã‚¯ãƒ©ã‚¹ã®æœ¬ä½“å‡¦ç†
+	 * ã‚µãƒ¼ãƒã‹ã‚‰æ¥ãŸæŒ‡ä»¤ã‚’å®Ÿè¡Œã™ã‚‹
+	 * @param val ã“ã“ã«ã¯ä»Šã®ã¨ã“ã‚ã‚µãƒ¼ãƒã‹ã‚‰æ¥ãŸã‚³ãƒãƒ³ãƒ‰æ–‡å­—åˆ—ã‚’ä¸ãˆã‚‹ï¼‰
 	 */
 	public void draw(String val) {
 
@@ -51,7 +51,7 @@ public class CharacterDrawer {
 
 		int count = Integer.parseInt(valsp1[0]);
 		
-		//ƒoƒbƒtƒ@ì¬
+		//ãƒãƒƒãƒ•ã‚¡ä½œæˆ
 		final Image buff_img = MainWindow.getInstance().panel.createImage(
 				MainWindow.getInstance().panel.getWidth(), MainWindow.getInstance().panel.getHeight());
 		
@@ -69,15 +69,15 @@ public class CharacterDrawer {
 			
 			if (method.equals("M")) {
 
-				//ƒoƒbƒtƒ@‚ÉŒü‚«‚É‰‚¶‚½‰æ‘œ‚ğ•`‰æ‚·‚éi‰æ‘œ‚Í“Ç‚İ‚İÏ‚İ‚Ìƒf[ƒ^‚ğ‘‚­‚½‚ßImageObserver‚Í•s—vj
+				//ãƒãƒƒãƒ•ã‚¡ã«å‘ãã«å¿œã˜ãŸç”»åƒã‚’æç”»ã™ã‚‹ï¼ˆç”»åƒã¯èª­ã¿è¾¼ã¿æ¸ˆã¿ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ›¸ããŸã‚ImageObserverã¯ä¸è¦ï¼‰
 				g2d.drawImage(ImageCreater.getInstance().getImg(pmuki), x, y, null);
-				//–¼‘O‚ğ•\¦‚·‚é
+				//åå‰ã‚’è¡¨ç¤ºã™ã‚‹
 				g2d.drawString(name, x+35, y+35);
 				
 			}
 		}
 		
-		//•`‰æÏ‚İ‚Ìƒoƒbƒtƒ@‚ğƒEƒBƒ“ƒhƒE‚É•`‰æ‚·‚é
+		//æç”»æ¸ˆã¿ã®ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æç”»ã™ã‚‹
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MainWindow.getInstance().panel.getGraphics().drawImage(buff_img, 0, 0, MainWindow.getInstance().panel);

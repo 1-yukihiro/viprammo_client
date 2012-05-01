@@ -1,4 +1,4 @@
-package viprammo.gui;
+ï»¿package viprammo.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -20,14 +20,14 @@ public class FirstWindow extends JFrame implements ActionListener {
 	private JLabel label;
 	private JTextField textfield;
 	private JButton button;
-	private JComboBox<String> combo = new JComboBox<String>(GLOBAL_CONFIG.LOG_LEVEL_STR);
+	private JComboBox combo = new JComboBox(GLOBAL_CONFIG.LOG_LEVEL_STR);
 	
 	public FirstWindow() {
 		
 		this.setSize(400, 500);
 		this.setLayout(new BorderLayout());
 		this.textfield = new JTextField();
-		this.label = new JLabel("–¼‘O‚ğ“ü‚ê‚ÄƒƒOƒŒƒxƒ‹‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B ƒƒOƒŒƒxƒ‹‚ÍINFO‚ªƒIƒXƒXƒiFINEŒn‚Íd‚­‚È‚é‰Â”\«—Lj");
+		this.label = new JLabel("åå‰ã‚’å…¥ã‚Œã¦ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚ ãƒ­ã‚°ãƒ¬ãƒ™ãƒ«ã¯INFOãŒã‚ªã‚¹ã‚¹ãƒ¡ï¼ˆFINEç³»ã¯é‡ããªã‚‹å¯èƒ½æ€§æœ‰ï¼‰");
 		this.button = new JButton("OK");
 		this.button.addActionListener(this);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +47,7 @@ public class FirstWindow extends JFrame implements ActionListener {
 			String name_str = this.textfield.getText();
 			
 			if ((name_str.indexOf("-") != -1) || (name_str.indexOf(",") != -1)) {
-				JOptionPane.showMessageDialog(this, new JLabel("<html><font color=\"red\"><b>‹Ö~•¶š—ñ‚ª“ü‚Á‚Ä‚¢‚Ü‚·IƒJƒ“ƒ}‚ÆƒnƒCƒtƒ“‚Íƒ_ƒ‚Å‚·B</b></font>"));
+				JOptionPane.showMessageDialog(this, new JLabel("<html><font color=\"red\"><b>ç¦æ­¢æ–‡å­—åˆ—ãŒå…¥ã£ã¦ã„ã¾ã™ï¼ã‚«ãƒ³ãƒã¨ãƒã‚¤ãƒ•ãƒ³ã¯ãƒ€ãƒ¡ã§ã™ã€‚</b></font>"));
 				return;
 			}
 			

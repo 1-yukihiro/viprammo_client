@@ -1,14 +1,14 @@
-import java.util.logging.Logger;
+ï»¿import java.util.logging.Logger;
 
-import viparammo.log.MyHandler;
 import viprammo.data.ImageCreater;
 import viprammo.gui.FirstWindow;
+import viprammo.log.MyHandler;
 
 
 public class VIPMMO {
 
 	/**
-	 * ‚±‚±‚©‚çŠJn@ƒƒCƒ“
+	 * ã“ã“ã‹ã‚‰é–‹å§‹ã€€ãƒ¡ã‚¤ãƒ³
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -16,15 +16,11 @@ public class VIPMMO {
 		Logger logger = Logger.getLogger(VIPMMO.class.getName());
 		logger.addHandler(new MyHandler());
 		
-		logger.info("‹N“®‚µ‚Ü‚µ‚½");
-		logger.info("‰æ‘œ‚Ì“Ç‚İ‚İŠJn");
-		
-		//‰æ‘œ‚Ì“Ç‚İ‚İigetInstance‚·‚ê‚Î©“®“I‚É— ‚Ånew‚³‚ê‚Ä‰æ‘œ‚ªƒƒ‚ƒŠ‚É“ü‚éj
-		ImageCreater.getInstance();
-		
-		//–¼‘O“ü—Í‰æ–ÊiƒƒOƒCƒ“‰æ–Êj•\¦
-		logger.info("ƒƒOƒCƒ“‰æ–Ê•\¦");
-		
+		logger.info("èµ·å‹•ã—ã¾ã—ãŸ");
+		logger.info("ç”»åƒã®èª­ã¿è¾¼ã¿é–‹å§‹");
+			
+		//åå‰å…¥åŠ›ç”»é¢ï¼ˆãƒ­ã‚°ã‚¤ãƒ³ç”»é¢ï¼‰è¡¨ç¤º
+		logger.info("ãƒ­ã‚°ã‚¤ãƒ³ç”»é¢è¡¨ç¤º");
 		new FirstWindow();
 
 	}

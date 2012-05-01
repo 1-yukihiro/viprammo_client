@@ -1,4 +1,4 @@
-package viprammo.data;
+﻿package viprammo.data;
 
 import viprammo.gui.MainWindow;
 

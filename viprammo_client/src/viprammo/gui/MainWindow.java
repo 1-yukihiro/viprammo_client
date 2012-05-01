@@ -1,4 +1,4 @@
-package viprammo.gui;
+﻿package viprammo.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import viprammo.bgwork.TCPSocketReceiver;
 import viprammo.bgwork.UDPDataSocketSend;
+import viprammo.data.ImageCreater;
 
 public class MainWindow implements KeyListener, ActionListener {
 
@@ -28,6 +29,9 @@ public class MainWindow implements KeyListener, ActionListener {
 	}
 	
 	private MainWindow() {
+		
+		//画像の読み込み（getInstanceすれば自動的に裏でnewされて画像がメモリに入る）
+		ImageCreater.getInstance();
 		
 		frame = new JFrame("VIPRAMMO");
 		frame.setJMenuBar(this.menubar);
@@ -54,13 +58,13 @@ public class MainWindow implements KeyListener, ActionListener {
 	private JMenuBar menubarCreate() {
 		
 		JMenuBar menubar = new JMenuBar();
-		JMenu menu_game = new JMenu("�Q�[��");
-		JMenu menu_devel = new JMenu("�J��");
+		JMenu menu_game = new JMenu("ゲーム");
+		JMenu menu_devel = new JMenu("開発");
 		
-		JMenuItem menuitem_exit = new JMenuItem("�I��");
+		JMenuItem menuitem_exit = new JMenuItem("終了");
 		menuitem_exit.addActionListener(this);
 		
-		JMenuItem menuitem_log = new JMenuItem("���O");
+		JMenuItem menuitem_log = new JMenuItem("ログ");
 		menuitem_log.addActionListener(this);
 		
 		menu_game.add(menuitem_exit);
@@ -102,9 +106,9 @@ public class MainWindow implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		
 		String action_cmd = arg0.getActionCommand();
-		if (action_cmd.equals("�I��")) {
+		if (action_cmd.equals("終了")) {
 			System.exit(0);
-		} else if (action_cmd.equals("���O")) {
+		} else if (action_cmd.equals("ログ")) {
 			JMenuItem item = (JMenuItem)arg0.getSource();
 			item.setEnabled(false);
 			LogWindow.getInstance().show();

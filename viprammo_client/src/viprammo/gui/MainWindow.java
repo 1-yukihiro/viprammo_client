@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
@@ -21,8 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
-import org.omg.IOP.Encoding;
+import javax.swing.UIManager;
 
 import viprammo.bgwork.TCPSocketReceiver;
 import viprammo.bgwork.UDPDataSocketSend;
@@ -52,6 +52,10 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 	}
 	
 	private MainWindow() {
+		
+	    for(Map.Entry<?,?> entry: UIManager.getDefaults().entrySet()) {
+	        System.out.println(entry.getKey());
+	    }
 		
 		//ロガーの設定
 		this.logger.setLevel(GLOBAL_CONFIG.LOG_LEVEL);

@@ -32,8 +32,8 @@ public class TCPSocketReceiver extends Thread {
 		//受信バッファ
 		byte[] buff = new byte[GLOBAL_CONFIG.CLIENT_BUFFER_SIZE];
 		
-		//データ格納用リスト
-		List<Byte> data = new ArrayList<Byte>();
+		//処理に使用するバッファーDirectの方が高速
+		ByteBuffer buffer = ByteBuffer.allocateDirect(GLOBAL_CONFIG.CLIENT_BUFFER_SIZE * 10);
 		
 		//初回の読み込みバイト数カウンタ
 		int read_num = 0;		
@@ -43,54 +43,65 @@ public class TCPSocketReceiver extends Thread {
 		
 		//将来用識別
 		byte ident = 0;
-		
-		//読み込み中フラグ
-		boolean now_reading = false;
+
+		//データ部取り出す用の配列
+		byte[] data_bu;
 		
 		while (!this.stopflag) {
-			
+		
 			try {
-				if ((read_num = is.read(buff)) != -1) {
-					
-					//とりあえずリストに受信データ格納
-					for (int i = 0; i < read_num; i++) {
-						data.add(buff[i]);
-					}				
-					
-					//データ部読み込み中なら
-					if (now_reading) {
-						
-						//データの長さ＋ヘッダー分の長さ以上ならデータ部は全てあるのでbyte[]化して処理に回す
-						if (data.size() >= length + 5) {
-							
-							byte[] data_byte = new byte[length];
-							for (int i = 0; i < length; i++) {
-								data_byte[i] = data.get(i+5);
-								data.remove(i+5); //ここでデータ部は消える
-							}
-							
-							//ヘッダー部を消す
-							for (int i = 0; i < 5; i++) {
-								data.remove(i);
-							}
-							
-							//data_byte = データ 次処理に回す
-							
-							//データ読み込み中は終了
-							now_reading = false;
-							
-						}
-						
-						//データ部読み込み中でなければ
-					} else {
-						length = ByteBuffer.wrap(new byte[] {data.get(0), data.get(1), data.get(2), data.get(3)}).getInt();
-						ident = data.get(4);
-						now_reading = true;
-					}
+				
+				read_num = is.read(buff);
+				System.out.println("readnum=" + read_num);
+				
+				buffer.put(buff, 0, read_num);
+				buffer.flip();
+				
+				//取得しなければならないlengthが0（つまりまだヘッダー読んでない）の状態で
+				//なおかつbufferのリミットが5バイトより少ない（つまりヘッダーが無い）状態であればさらにputが必要なのでcontinue
+				//ここでは断片化で受信した4byteとかがあるかもしれない
+				if ((length == 0) && (buffer.limit() < 5)) {
+					continue;
 				}
 				
-			} catch (IOException e) {
+				//ヘッダーを読んで居ない状態でヘッダー分以上のデータがあればヘッダーを読む
+				if ((length == 0) && (buffer.limit() >= 5)) {
+					
+					//バッファーを読むときはflip(ここでpos0limitはputしたとこまでに)
+					//buffer.flip();
+					
+					length = buffer.getInt();
+					ident = buffer.get();
 
+				}
+
+				
+				//-------------------- ここに来る時点で必ずlengthは入ってる ----------------------------
+
+				
+				//バッファーのリミットがlength以上ならデータを読み込んで処理に回す
+				if (buffer.remaining() >= length) {
+					
+					System.out.println("remai="+buffer.remaining());
+					
+					//データ部用の配列作る
+					data_bu = new byte[length];
+					//データ取得
+					buffer.get(data_bu);
+
+					System.out.printf("length=%d, ident=%d, data=%d\n", length, ident, data_bu.length);
+					
+					//データ取得が終了したら追記できるようにしておく
+					//buffer.compact();
+					//lengthに0入れる
+					length = 0;
+					System.out.println(buffer.limit());
+					
+				}
+				
+				buffer.compact();
+				
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
@@ -150,8 +161,8 @@ public class TCPSocketReceiver extends Thread {
 	public TCPSocketReceiver(String name) {
 		
 		try {
-			socket = new Socket("118.243.3.245", 10001);
-			//socket = new Socket("172.17.10.100", 10001);
+			//socket = new Socket("118.243.3.245", 10001);
+			socket = new Socket("127.0.0.1", 10001);
 			OutputStream os = socket.getOutputStream();
 			os.write(new String("IAM"+name+"\r\n").getBytes());
 			os.flush();

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.msgpack.MessagePack;
 
+import viprammo.bgwork.TCPSocketReceiver;
 import viprammo.gui.FirstWindow;
 import viprammo.log.MyHandler;
 import viprammo.message.CharacterModifMessage;
@@ -23,7 +24,14 @@ public class VIPMMO {
 	public static void main(String[] args) {
 
 		Test();
+		try {
+			Thread.sleep(1200000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		System.exit(99);
+		
+		
 		
 		Logger logger = Logger.getLogger(VIPMMO.class.getName());
 		logger.addHandler(new MyHandler());
@@ -37,26 +45,7 @@ public class VIPMMO {
 	}
 
 	public static void Test() {
-		CommandMessage c_message = new CommandMessage();
-		c_message.setMessageHeader(new MessageHeader("TEST", "172.17.10.1"));
-		
-		for (int i = 0; i < 5; i++) {
-			CharacterModifMessage msg = new CharacterModifMessage();
-			msg.setUser("TESTUSER");
-			msg.setX(10);
-			msg.setY(20);
-
-			c_message.addMessage(msg);
-		}
-		
-		byte[] buff = MessagePack.pack(c_message);
-		System.out.println("length="+  buff.length);
-		CommandMessage modosu = MessagePack.unpack(buff, CommandMessage.class);
-		
-		System.out.println(modosu.getMessageHeader().getMessage_string());
-		System.out.println(modosu.getMessageList().size());
-		System.out.println(modosu.getMessageList().get(3).getUser());
-		
+		new TCPSocketReceiver("TESTUSER").start();
 	}
 	
 	private static Font createFontByFile(String file) {

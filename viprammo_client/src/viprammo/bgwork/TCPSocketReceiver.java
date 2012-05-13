@@ -83,7 +83,7 @@ public class TCPSocketReceiver extends Thread {
 	}
 	
 	/**
-	 * ソケットへの出力を処理するクラス
+	 * ソケットの入力を処理するクラス
 	 * @author Yukihiro
 	 *
 	 */
@@ -105,10 +105,13 @@ public class TCPSocketReceiver extends Thread {
 				try {
 					length = dis.readInt();
 					ident = dis.readByte();
+					System.out.println(String.format("ヘッダー読み込み length=%d, ident=%d", length, ident));
 					logger.finest(String.format("ヘッダー読み込み length=%d, ident=%d", length, ident));
 					
 					byte[] buff = new byte[length];
 					dis.readFully(buff);
+					
+					
 				} catch (IOException e) {
 					logger.severe("ソケット処理でIOエラー");
 					e.printStackTrace();
@@ -120,7 +123,7 @@ public class TCPSocketReceiver extends Thread {
 	}
 	
 	/**
-	 * ソケットへの入力を処理するクラス
+	 * ソケットへの出力を処理するクラス
 	 * @author Yukihiro
 	 *
 	 */

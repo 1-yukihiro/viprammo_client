@@ -23,15 +23,6 @@ public class VIPMMO {
 	 */
 	public static void main(String[] args) {
 
-		Test();
-		try {
-			Thread.sleep(1200000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.exit(99);
-		
-		
 		
 		Logger logger = Logger.getLogger(VIPMMO.class.getName());
 		logger.addHandler(new MyHandler());

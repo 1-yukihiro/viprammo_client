@@ -28,6 +28,10 @@ import viprammo.bgwork.TCPSocketReceiver;
 import viprammo.bgwork.UDPDataSocketSend;
 import viprammo.data.ImageCreater;
 import viprammo.log.MyHandler;
+import viprammo.message.ChatMessage;
+import viprammo.message.CommandMessage;
+import viprammo.message.MessageHeader;
+import viprammo.message.UserInputMessage;
 import viprammo.util.GLOBAL_CONFIG;
 
 public class MainWindow implements KeyListener, ActionListener, MouseListener {
@@ -47,15 +51,13 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 	
 	private static MainWindow instance = new MainWindow();
 	
+	private TCPSocketReceiver tcpsr = null;
+	
 	public static MainWindow getInstance() {
 		return instance;
 	}
 	
 	private MainWindow() {
-		
-	    for(Map.Entry<?,?> entry: UIManager.getDefaults().entrySet()) {
-	        System.out.println(entry.getKey());
-	    }
 		
 		//ロガーの設定
 		this.logger.setLevel(GLOBAL_CONFIG.LOG_LEVEL);
@@ -111,8 +113,10 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 	}
 	
 	public void show() {
-		TCPSocketReceiver tcpr = new TCPSocketReceiver(this.name);
-		tcpr.start();
+		System.out.println("start");
+		tcpsr = new TCPSocketReceiver(this.name);
+		tcpsr.start();
+
 		frame.setVisible(true);
 	}
 	
@@ -165,15 +169,17 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 		if (arg0.getSource().equals(this.panel)) {
 			
 			char key_char = arg0.getKeyChar();
-
 			logger.finest("key_char=" + key_char);
-			StringBuilder sb = new StringBuilder();
-			sb.append(this.name);
-			sb.append(",M,");
-			sb.append(key_char);
-			sb.append("\r\n");
-			System.out.println(sb.toString());
-			UDPDataSocketSend.send(sb.toString().getBytes());
+			
+			CommandMessage cmessage = new CommandMessage();
+			cmessage.setMessageHeader(new MessageHeader());
+			UserInputMessage uimessage = new UserInputMessage();
+			uimessage.setKeyChar(arg0.getKeyChar());
+			cmessage.addMessage(uimessage);
+
+			tcpsr.send(cmessage);
+			
+			//UDPDataSocketSend.send(sb.toString().getBytes());
 
 			//チャット入力フィールドからのイベントなら
 		} else if (arg0.getSource().equals(this.chat_textfield)) {
@@ -184,9 +190,13 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 				
 				System.out.println(System.getProperty("file.encoding"));
 				String message = chat_textfield.getText();
+				CommandMessage cm = new CommandMessage();
+				cm.setMessageHeader(new MessageHeader());
 				
-				message = message.replaceAll(",", "*kinshi*").replaceAll("-", "*kinshi*");
-				System.out.println("message="+ message);
+				ChatMessage chatmessage = new ChatMessage();
+				chatmessage.setMessage_str(message);
+				chatmessage.setUser(this.name);
+				cm.addMessage(chatmessage);
 				
 				//GUI描画に関わる処理
 				SwingUtilities.invokeLater(new Runnable() {
@@ -196,17 +206,11 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 				});
 				
 				logger.finest("message=" + message);
-				StringBuilder sb = new StringBuilder();
-				sb.append(this.name);
-				sb.append(",C,");
-				sb.append(message);
-				sb.append("\r\n");
-				try {
-					UDPDataSocketSend.send(sb.toString().getBytes("UTF-8"));
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
+
+				//送信
+				tcpsr.send(cm);
 				
+
 			}
 			
 		} else {

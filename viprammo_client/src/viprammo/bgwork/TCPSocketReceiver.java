@@ -1,18 +1,21 @@
 ﻿package viprammo.bgwork;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-
-
 import viprammo.log.MyHandler;
+import viprammo.message.CommandMessage;
 import viprammo.util.VipraUtil;
 
 /**
@@ -47,13 +50,6 @@ public class TCPSocketReceiver extends Thread {
 		
 		this.inputworker.start();
 		this.outputworker.start();
-		try {
-			this.inputworker.join();
-			this.outputworker.join();
-		} catch (InterruptedException e) {
-			logger.severe("ソケット切断");
-			e.printStackTrace();
-		}
 		
 	}
 	
@@ -64,8 +60,8 @@ public class TCPSocketReceiver extends Thread {
 	public TCPSocketReceiver(String name) {
 		
 		try {
-			//socket = new Socket("118.243.3.245", 10001);
-			socket = new Socket("127.0.0.1", 10001);
+			socket = new Socket("118.243.3.245", 10001);
+			//socket = new Socket("127.0.0.1", 10001);
 			OutputStream os = socket.getOutputStream();
 			InputStream is = socket.getInputStream();
 			
@@ -137,8 +133,55 @@ public class TCPSocketReceiver extends Thread {
 		
 		public void run() {
 			
+			while (true) {
+				
+				try {
+					Thread.sleep(300l);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+			}
+			
 		}
+
+		public void send(byte[] b) {
+			
+			try {
+				this.dos.writeInt(b.length);
+				this.dos.writeByte(1);
+				this.dos.write(b, 0, b.length);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	public void send(CommandMessage cm) {
+		ByteArrayOutputStream bytearray = null;
 		
+		try {
+			bytearray = new ByteArrayOutputStream();
+			ObjectOutputStream oss = new ObjectOutputStream(bytearray);
+			oss.writeObject(cm);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		byte[] buff = bytearray.toByteArray();
+		
+		int length = buff.length;
+		byte ident = 1;
+		ByteBuffer bf = ByteBuffer.allocate(5 + buff.length);
+		bf.putInt(length);
+		bf.put(ident);
+		bf.put(buff);
+		
+		this.send(bf.array());
+	}
+	
+	public void send(byte[] b) {
+		this.outputworker.send(b);
 	}
 	
 }

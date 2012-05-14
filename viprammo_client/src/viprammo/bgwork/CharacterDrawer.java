@@ -52,6 +52,7 @@ public class CharacterDrawer {
 		
 		Graphics2D g2d = (Graphics2D) buff_img.getGraphics();
 		
+		//受信したメッセージを分解（それぞれのメッセージ種別によって判定してるが良いパターン捜索中）
 		for (Message message : c_message.getMessageList()) {
 			
 			switch (message.getKIND()) {

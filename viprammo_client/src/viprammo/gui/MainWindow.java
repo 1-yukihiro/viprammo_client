@@ -31,6 +31,7 @@ import viprammo.log.MyHandler;
 import viprammo.message.ChatMessage;
 import viprammo.message.CommandMessage;
 import viprammo.message.MessageHeader;
+import viprammo.message.UserAuthMessage;
 import viprammo.message.UserInputMessage;
 import viprammo.util.GLOBAL_CONFIG;
 
@@ -117,6 +118,14 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 		tcpsr = new TCPSocketReceiver(this.name);
 		tcpsr.start();
 
+		CommandMessage cmessage = new CommandMessage();
+		cmessage.setMessageHeader(new MessageHeader());
+		
+		UserAuthMessage uam = new UserAuthMessage();
+		uam.setUser(this.name);
+		cmessage.addMessage(uam);
+		tcpsr.send(cmessage);
+		
 		frame.setVisible(true);
 	}
 	
@@ -175,6 +184,8 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 			cmessage.setMessageHeader(new MessageHeader());
 			UserInputMessage uimessage = new UserInputMessage();
 			uimessage.setKeyChar(arg0.getKeyChar());
+			uimessage.setUser(this.name);
+			
 			cmessage.addMessage(uimessage);
 
 			tcpsr.send(cmessage);

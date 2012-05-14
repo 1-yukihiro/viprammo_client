@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -38,6 +39,8 @@ public class TCPSocketReceiver extends Thread {
 	InputStreamWorker inputworker;
 	OutputStreamWorker outputworker;
 	
+	String name;
+	
 	/**
 	 * ロガー
 	 */
@@ -58,6 +61,8 @@ public class TCPSocketReceiver extends Thread {
 	 * @param name キャラの名前
 	 */
 	public TCPSocketReceiver(String name) {
+		
+		this.name = name;
 		
 		try {
 			socket = new Socket("118.243.3.245", 10001);
@@ -86,6 +91,7 @@ public class TCPSocketReceiver extends Thread {
 	private class InputStreamWorker extends Thread {
 		
 		DataInputStream dis;
+		ObjectInputStream ois;
 		
 		public InputStreamWorker(InputStream inputstream) {
 			dis = new DataInputStream(inputstream);
@@ -93,23 +99,24 @@ public class TCPSocketReceiver extends Thread {
 		
 		public void run() {
 			
-			int length = 0;
-			byte ident = 0;
+			try {
+				ois = new ObjectInputStream(dis);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			
 			while (true) {
 				
 				try {
-					length = dis.readInt();
-					ident = dis.readByte();
-					System.out.println(String.format("ヘッダー読み込み length=%d, ident=%d", length, ident));
-					logger.finest(String.format("ヘッダー読み込み length=%d, ident=%d", length, ident));
-					
-					byte[] buff = new byte[length];
-					dis.readFully(buff);
-					
+
+					CommandMessage cm = (CommandMessage)ois.readObject();
+					CharacterDrawer.getInstance().draw(cm);
 					
 				} catch (IOException e) {
 					logger.severe("ソケット処理でIOエラー");
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -125,63 +132,37 @@ public class TCPSocketReceiver extends Thread {
 	 */
 	private class OutputStreamWorker extends Thread {
 		
-		DataOutputStream dos;
+		ObjectOutputStream oos;
 		
 		public OutputStreamWorker(OutputStream os) {
-			dos = new DataOutputStream(os);
+			try {
+				oos = new ObjectOutputStream(os);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		public void run() {
 			
 			while (true) {
 				
-				try {
-					Thread.sleep(300l);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
 			}
 			
 		}
 
-		public void send(byte[] b) {
-			
+		public void send(CommandMessage cm) {
 			try {
-				this.dos.writeInt(b.length);
-				this.dos.writeByte(1);
-				this.dos.write(b, 0, b.length);
+				oos.writeObject(cm);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	
 	public void send(CommandMessage cm) {
-		ByteArrayOutputStream bytearray = null;
-		
-		try {
-			bytearray = new ByteArrayOutputStream();
-			ObjectOutputStream oss = new ObjectOutputStream(bytearray);
-			oss.writeObject(cm);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		byte[] buff = bytearray.toByteArray();
-		
-		int length = buff.length;
-		byte ident = 1;
-		ByteBuffer bf = ByteBuffer.allocate(5 + buff.length);
-		bf.putInt(length);
-		bf.put(ident);
-		bf.put(buff);
-		
-		this.send(bf.array());
-	}
-	
-	public void send(byte[] b) {
-		this.outputworker.send(b);
+		this.outputworker.send(cm);
 	}
 	
 }

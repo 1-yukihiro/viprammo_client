@@ -34,22 +34,28 @@ public class ImageCreater {
 	
 	private void read() {
 		
-		String[] files = {"w1", "w2", "a1", "a2", "s1", "s2", "d1", "d2"};
-		String base_url = "http://118.243.3.245/vipra/pic/";
-		String url = null;
+		String[] chara = {"b", "g"};
 		
-		for (String s : files) {
-			url = base_url + s;
-			try {
-				this.img_map.put(s, ImageIO.read(new URL(url)));
-				logger.info(url);
-			} catch (MalformedURLException e) {
-				logger.severe(e.getMessage());
-			} catch (IOException e) {
-				logger.severe(e.getMessage());
-			}
+		for (String char_prefix : chara) {
+			
+			String[] files = {"w0", "w1", "w2", "a1", "a2", "s0", "s1", "s2", "d1", "d2"};
+			String base_url = "http://118.243.3.245/vipra/pic/";
+			String url = null;
+		
+			for (String s : files) {
+				url = base_url + char_prefix + "_" + s  + ".png";
+				try {
+					this.img_map.put(char_prefix + "_" + s, ImageIO.read(new URL(url)));
+					logger.info(url);
+				} catch (MalformedURLException e) {
+					logger.severe(e.getMessage());
+				} catch (IOException e) {
+					logger.severe(e.getMessage());
+				}
+			}	
+			
 		}
-
+		
 		logger.info("画像読み込み完了");
 		
 	}

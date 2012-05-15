@@ -63,7 +63,7 @@ public class CharacterDrawer {
 				CharacterModifMessage cmod_message = (CharacterModifMessage) message;
 				character_write_flag = true;
 				
-				g2d.drawImage(ImageCreater.getInstance().getImg(cmod_message.getMuki()), cmod_message.getX(), cmod_message.getY(), null);
+				g2d.drawImage(ImageCreater.getInstance().getImg(cmod_message.getCharacter_prefix() + "_" + cmod_message.getMuki()), cmod_message.getX(), cmod_message.getY(), null);
 				g2d.drawString(cmod_message.getUser(), cmod_message.getX()+35, cmod_message.getY() + 35);
 				break;
 			}

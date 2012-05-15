@@ -54,6 +54,8 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 	
 	private TCPSocketReceiver tcpsr = null;
 	
+	private String character_prefix = null;
+	
 	public static MainWindow getInstance() {
 		return instance;
 	}
@@ -123,7 +125,9 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 		
 		UserAuthMessage uam = new UserAuthMessage();
 		uam.setUser(this.name);
+		uam.setCharPrefix(this.character_prefix);
 		cmessage.addMessage(uam);
+		
 		tcpsr.send(cmessage);
 		
 		frame.setVisible(true);
@@ -150,6 +154,10 @@ public class MainWindow implements KeyListener, ActionListener, MouseListener {
 		
 		return menubar;
 		
+	}
+	
+	public void setCharPrefix(String characterprefix) {
+		this.character_prefix = characterprefix;
 	}
 	
 	/**

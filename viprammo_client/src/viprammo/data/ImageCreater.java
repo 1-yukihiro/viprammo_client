@@ -39,7 +39,7 @@ public class ImageCreater {
 		for (String char_prefix : chara) {
 			
 			String[] files = {"w0", "w1", "w2", "a1", "a2", "s0", "s1", "s2", "d1", "d2"};
-			String base_url = "http://118.243.3.245/vipra/pic/";
+			String base_url = "http://www.viprammo.com/vipra/pic/";
 			String url = null;
 		
 			for (String s : files) {

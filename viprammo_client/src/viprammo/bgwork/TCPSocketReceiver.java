@@ -29,6 +29,11 @@ import viprammo.util.VipraUtil;
 public class TCPSocketReceiver extends Thread {
 
 	/**
+	 * 描画処理クラス
+	 */
+	DisplayUpdateWorker duw = new DisplayUpdateWorker();
+	
+	/**
 	 * ソケット
 	 */
 	Socket socket;
@@ -53,6 +58,7 @@ public class TCPSocketReceiver extends Thread {
 		
 		this.inputworker.start();
 		this.outputworker.start();
+		this.duw.start();
 		
 	}
 	
@@ -71,7 +77,7 @@ public class TCPSocketReceiver extends Thread {
 			InputStream is = socket.getInputStream();
 			
 			//それぞれ受信送信用の処理スレッドを作る
-			this.inputworker = new InputStreamWorker(is);
+			this.inputworker = new InputStreamWorker(is, this.duw);
 			this.outputworker = new OutputStreamWorker(os);
 			
 			
@@ -92,9 +98,11 @@ public class TCPSocketReceiver extends Thread {
 		
 		DataInputStream dis;
 		ObjectInputStream ois;
+		DisplayUpdateWorker displayupdateworker;
 		
-		public InputStreamWorker(InputStream inputstream) {
+		public InputStreamWorker(InputStream inputstream, DisplayUpdateWorker du) {
 			dis = new DataInputStream(inputstream);
+			displayupdateworker = du;
 		}
 		
 		public void run() {
@@ -110,7 +118,8 @@ public class TCPSocketReceiver extends Thread {
 				try {
 
 					CommandMessage cm = (CommandMessage)ois.readObject();
-					CharacterDrawer.getInstance().draw(cm);
+					//CharacterDrawer.getInstance().draw(cm);
+					displayupdateworker.addCommand(cm);
 					
 				} catch (IOException e) {
 					logger.severe("ソケット処理でIOエラー");

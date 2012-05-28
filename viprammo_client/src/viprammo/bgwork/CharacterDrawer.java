@@ -2,7 +2,11 @@
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
 import viprammo.data.ImageCreater;
@@ -43,8 +47,11 @@ public class CharacterDrawer {
 	 */
 	public void draw(CommandMessage c_message) {
 		
+		System.out.printf("pnal_width=%d, panel_height=%d\n", MainWindow.getInstance().panel.getWidth(), MainWindow.getInstance().panel.getHeight());
 		//キャラクタ情報の書換えフラグ
 		boolean character_write_flag = false;
+		//自キャラ書換えフラグ
+		boolean mycharacter_move_flag = false;
 		
 		//バッファ作成
 		final Image buff_img = MainWindow.getInstance().panel.createImage(
@@ -63,9 +70,36 @@ public class CharacterDrawer {
 				CharacterModifMessage cmod_message = (CharacterModifMessage) message;
 				character_write_flag = true;
 				
+				//自分の状態変更であった場合
+				if (cmod_message.user.equals(MainWindow.getInstance().name)) {
+					mycharacter_move_flag = true;
+					//ゲームマネージャに最新の自分の状態を入れておく
+					GameManager.getInstance().setCharacterModifMessage(cmod_message);
+				}
+				
 				g2d.drawImage(ImageCreater.getInstance().getImg(cmod_message.getCharacter_prefix() + "_" + cmod_message.getMuki()), cmod_message.getX(), cmod_message.getY(), null);
 				g2d.drawString(cmod_message.getUser(), cmod_message.getX()+35, cmod_message.getY() + 35);
 				break;
+			}
+			
+		}
+		
+		//自キャラの移動を行った場合はmapの表示領域に変更があるかもしれないので描画
+		if (mycharacter_move_flag) {			
+			
+			//新しいバッファ作成
+			BufferedImage bimg_new = new BufferedImage(24*64, 23*64, BufferedImage.TYPE_INT_ARGB); 
+			
+			Graphics2D g2d_map = bimg_new.createGraphics();
+			
+			String[][] data = ImageCreater.getInstance().getMapdata();
+			//バッファに画像を描画する
+			for (int i = 0; i < 23; i++) {
+				for (int j = 0; j < 24; j++) {
+					if (!data[j][i].equals("P")) {
+						g2d_map.drawImage(ImageCreater.getInstance().getImg(data[j][i]), j * 64, i* 64, null);
+					}
+				}
 			}
 			
 		}
@@ -79,6 +113,10 @@ public class CharacterDrawer {
 				}
 			});
 		}
+		
+	}
+	
+	private void mapDraw() {
 		
 	}
 }

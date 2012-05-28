@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.msgpack.MessagePack;
 
+import viprammo.bgwork.GameManager;
 import viprammo.bgwork.TCPSocketReceiver;
 import viprammo.gui.FirstWindow;
 import viprammo.log.MyHandler;
@@ -29,6 +30,9 @@ public class VIPMMO {
 		
 		logger.info("起動しました");
 
+		//とりあえずインスタンス化しておく（後でnewされるのは嫌）
+		GameManager.getInstance();
+		
 		//名前入力画面（ログイン画面）表示
 		logger.info("ログイン画面表示");
 		new FirstWindow();

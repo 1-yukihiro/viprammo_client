@@ -18,12 +18,18 @@ public class DisplayUpdateWorker extends Thread {
 	@Override
 	public void run() {
 		
+		
+		
 		while (true) {
+		
+			//long startnano = System.nanoTime();
 			
 			for (int i = 0; i < this.command.size(); i++) {
 				CharacterDrawer.getInstance().draw(this.command.get(i));
 				this.command.remove(i);
 			}
+			
+			//System.out.println(System.nanoTime() - startnano);
 			
 			try {
 				Thread.sleep(1);

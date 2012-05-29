@@ -1,5 +1,6 @@
 package viprammo.bgwork;
 
+import viprammo.gui.MainWindow;
 import viprammo.message.CharacterModifMessage;
 
 /**
@@ -14,7 +15,10 @@ public class GameManager {
 	public static GameManager instance = new GameManager();
 	
 	private GameManager() {
-		
+		this.cmod_message = new CharacterModifMessage();
+		this.cmod_message.user = MainWindow.getInstance().name;
+		this.cmod_message.setX(300);
+		this.cmod_message.setY(300);
 	}
 	
 	public static GameManager getInstance() {

@@ -75,7 +75,7 @@ public class ImageCreater {
 
 	private void readMapObjectPicture() {
 		
-		String[] files = { "W0", "K0"};
+		String[] files = { "W0", "K0", "P"};
 		String base_url = "http://www.viprammo.com/vipra/map/pic/";
 		String url = null;
 		

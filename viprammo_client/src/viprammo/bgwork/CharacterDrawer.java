@@ -127,9 +127,7 @@ public class CharacterDrawer {
 		//バッファに画像を描画する
 		for (int i = x_pos_start; i < x_pos + 5; i++) {
 			for (int j = y_pos_start; j < y_pos + 3; j++) {
-				if (!data[i][j].equals("P")) {
-					g2d_map.drawImage(ImageCreater.getInstance().getImg(data[j][i]), j * 64, i* 64, null);
-				}
+				g2d_map.drawImage(ImageCreater.getInstance().getImg(data[j][i]), j * 64, i* 64, null);
 			}
 		}
 		
